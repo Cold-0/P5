@@ -1,15 +1,18 @@
 package com.cleanup.todoc.ui;
 
 import android.content.res.ColorStateList;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.databinding.ItemTaskBinding;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
@@ -56,8 +59,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_task, viewGroup, false);
-        return new TaskViewHolder(view, deleteTaskListener);
+        @NonNull ItemTaskBinding binding = ItemTaskBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
+        return new TaskViewHolder(binding, deleteTaskListener);
     }
 
     @Override
@@ -88,48 +91,21 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      * @author Gaëtan HERFRAY
      */
     static class TaskViewHolder extends RecyclerView.ViewHolder {
-        /**
-         * The circle icon showing the color of the project
-         */
-        private final AppCompatImageView imgProject;
 
-        /**
-         * The TextView displaying the name of the task
-         */
-        private final TextView lblTaskName;
-
-        /**
-         * The TextView displaying the name of the project
-         */
-        private final TextView lblProjectName;
-
-        /**
-         * The delete icon
-         */
-        private final AppCompatImageView imgDelete;
+        private final ItemTaskBinding mBinding;
 
         /**
          * The listener for when a task needs to be deleted
          */
         private final DeleteTaskListener deleteTaskListener;
 
-        /**
-         * Instantiates a new TaskViewHolder.
-         *
-         * @param itemView           the view of the task item
-         * @param deleteTaskListener the listener for when a task needs to be deleted to set
-         */
-        TaskViewHolder(@NonNull View itemView, @NonNull DeleteTaskListener deleteTaskListener) {
-            super(itemView);
-
+        TaskViewHolder(@NonNull ItemTaskBinding binding, @NonNull DeleteTaskListener deleteTaskListener) {
+            super(binding.getRoot());
+            mBinding = binding;
             this.deleteTaskListener = deleteTaskListener;
 
-            imgProject = itemView.findViewById(R.id.img_project);
-            lblTaskName = itemView.findViewById(R.id.lbl_task_name);
-            lblProjectName = itemView.findViewById(R.id.lbl_project_name);
-            imgDelete = itemView.findViewById(R.id.img_delete);
 
-            imgDelete.setOnClickListener(new View.OnClickListener() {
+            mBinding.imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final Object tag = view.getTag();
@@ -146,16 +122,16 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
          * @param task the task to bind in the item view
          */
         void bind(Task task) {
-            lblTaskName.setText(task.getName());
-            imgDelete.setTag(task);
+            mBinding.lblTaskName.setText(task.getName());
+            mBinding.imgDelete.setTag(task);
 
             final Project taskProject = task.getProject();
             if (taskProject != null) {
-                imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
-                lblProjectName.setText(taskProject.getName());
+                mBinding.imgProject.setSupportImageTintList(ColorStateList.valueOf(taskProject.getColor()));
+                mBinding.lblProjectName.setText(taskProject.getName());
             } else {
-                imgProject.setVisibility(View.INVISIBLE);
-                lblProjectName.setText("");
+                mBinding.imgProject.setVisibility(View.INVISIBLE);
+                mBinding.lblProjectName.setText("");
             }
 
         }
