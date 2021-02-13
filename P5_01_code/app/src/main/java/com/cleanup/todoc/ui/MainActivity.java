@@ -14,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.databinding.ActivityMainBinding;
@@ -26,6 +24,7 @@ import com.cleanup.todoc.model.Task;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * List of all projects available in the application
      */
-    private final Project[] allProjects = Project.getAllProjects();
+    private final List<Project> allProjects = Project.getAllProjects();
 
     /**
      * List of all current tasks of the application

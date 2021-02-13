@@ -4,12 +4,22 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * <p>Models for project in which tasks are included.</p>
  *
  * @author Gaëtan HERFRAY
  */
 public class Project {
+
+    static final private List<Project> projectList = Arrays.asList(
+            new Project(1L, "Projet Tartampion", 0xFFEADAD1),
+            new Project(2L, "Projet Lucidia", 0xFFB4CDBA),
+            new Project(3L, "Projet Circus", 0xFFA3CED2)
+    );
+
     /**
      * The unique identifier of the project
      */
@@ -46,12 +56,8 @@ public class Project {
      * @return all the projects of the application
      */
     @NonNull
-    public static Project[] getAllProjects() {
-        return new Project[]{
-                new Project(1L, "Projet Tartampion", 0xFFEADAD1),
-                new Project(2L, "Projet Lucidia", 0xFFB4CDBA),
-                new Project(3L, "Projet Circus", 0xFFA3CED2),
-        };
+    public static List<Project> getAllProjects() {
+        return projectList;
     }
 
     /**
