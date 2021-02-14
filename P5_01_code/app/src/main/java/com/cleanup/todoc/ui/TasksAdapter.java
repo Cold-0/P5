@@ -15,11 +15,6 @@ import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 
-/**
- * <p>Adapter which handles the list of tasks to display in the dedicated RecyclerView.</p>
- *
- * @author Gaëtan HERFRAY
- */
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
     /**
      * The list of tasks the adapter deals with
@@ -74,26 +69,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
      * Listener for deleting tasks
      */
     public interface DeleteTaskListener {
-        /**
-         * Called when a task needs to be deleted.
-         *
-         * @param task the task that needs to be deleted
-         */
         void onDeleteTask(Task task);
     }
 
-    /**
-     * <p>ViewHolder for task items in the tasks list</p>
-     *
-     * @author Gaëtan HERFRAY
-     */
     static class TaskViewHolder extends RecyclerView.ViewHolder {
-
         private final ItemTaskBinding mBinding;
-
-        /**
-         * The listener for when a task needs to be deleted
-         */
         private final DeleteTaskListener deleteTaskListener;
 
         TaskViewHolder(@NonNull ItemTaskBinding binding, @NonNull DeleteTaskListener deleteTaskListener) {
@@ -101,22 +81,16 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
             mBinding = binding;
             this.deleteTaskListener = deleteTaskListener;
 
-
-            mBinding.imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Object tag = view.getTag();
-                    if (tag instanceof Task) {
-                        TaskViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
-                    }
+            mBinding.imgDelete.setOnClickListener(view -> {
+                final Object tag = view.getTag();
+                if (tag instanceof Task) {
+                    TaskViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
                 }
             });
         }
 
         /**
          * Binds a task to the item view.
-         *
-         * @param task the task to bind in the item view
          */
         void bind(Task task) {
             mBinding.lblTaskName.setText(task.getName());
