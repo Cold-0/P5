@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         // If dialog is open
-        if (mDialogAddTaskBinding.txtTaskName != null && mDialogAddTaskBinding.projectSpinner != null) {
+        if (mDialogAddTaskBinding != null) {
             // Get the name of the task
             String taskName = mDialogAddTaskBinding.txtTaskName.getText().toString();
 
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void showAddTaskDialog() {
         mDialogAddTaskBinding = DialogAddTaskBinding.inflate(getLayoutInflater());
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
         builder.setView(mDialogAddTaskBinding.getRoot());
         builder.setTitle(R.string.add_task);
         builder.setPositiveButton(R.string.add, null);
@@ -226,34 +226,17 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void populateDialogSpinner() {
         final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (mDialogAddTaskBinding.projectSpinner != null) {
-            mDialogAddTaskBinding.projectSpinner.setAdapter(adapter);
-        }
+        mDialogAddTaskBinding.projectSpinner.setAdapter(adapter);
     }
 
     /**
      * List of all possible sort methods for task
      */
     private enum SortMethod {
-        /**
-         * Sort alphabetical by name
-         */
         ALPHABETICAL,
-        /**
-         * Inverted sort alphabetical by name
-         */
         ALPHABETICAL_INVERTED,
-        /**
-         * Lastly created first
-         */
         RECENT_FIRST,
-        /**
-         * First created first
-         */
         OLD_FIRST,
-        /**
-         * No sort
-         */
         NONE
     }
 }
