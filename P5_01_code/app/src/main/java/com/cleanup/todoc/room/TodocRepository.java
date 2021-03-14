@@ -28,6 +28,7 @@ public class TodocRepository {
         mTaskDao = db.taskDao();
         mProjectDao = db.projectDao();
         mAllTasks = mTaskDao.getAll();
+        mAllProjects = mProjectDao.getAll();
     }
 
     // Room executes all queries on a separate thread.
