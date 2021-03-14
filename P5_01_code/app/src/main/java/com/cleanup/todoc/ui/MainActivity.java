@@ -12,13 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.databinding.ActivityMainBinding;
 import com.cleanup.todoc.databinding.DialogAddTaskBinding;
-import com.cleanup.todoc.model.Project;
-import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.room.entity.Project;
+import com.cleanup.todoc.room.entity.Task;
+import com.cleanup.todoc.room.viewmodel.ProjectViewModel;
+import com.cleanup.todoc.room.viewmodel.TaskViewModel;
+import com.cleanup.todoc.ui.tasklist.TasksAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +32,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
     private ActivityMainBinding mBinding;
 
-    private final List<Project> mProjectList = Project.getAllProjects();
+    private TaskViewModel mTaskViewModel;
+    private ProjectViewModel mProjectViewModel;
+
     private final ArrayList<Task> mTaskList = new ArrayList<>();
+    private List<Project> mProjectList;
 
     private final TasksAdapter mTasksAdapter = new TasksAdapter(mTaskList, this);
 
@@ -45,6 +52,17 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        mTaskViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(TaskViewModel.class);
+        mProjectViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProjectViewModel.class);
+
+        mTaskViewModel.getAllTasks().observe(this, tasks -> {
+            mTasksAdapter.updateTasks(tasks);
+        });
+
+        mProjectViewModel.getAllProjects().observe(this, projects -> {
+            mProjectList = projects;
+        });
 
         mBinding.listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mBinding.listTasks.setAdapter(mTasksAdapter);
@@ -160,9 +178,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
             // If both project and name of the task have been set
             else if (taskProject != null) {
-                // TODO: Replace this by id of persisted task
-                long id = (long) (Math.random() * 50000);
-                Task task = new Task(id, taskProject.getId(), taskName, new Date().getTime());
+                Task task = new Task(taskName, new Date().getTime(), taskProject.getName());
                 addTask(task);
                 dialogInterface.dismiss();
             }

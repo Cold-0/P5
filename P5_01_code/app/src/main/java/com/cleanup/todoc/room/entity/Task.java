@@ -1,30 +1,36 @@
-package com.cleanup.todoc.model;
+package com.cleanup.todoc.room.entity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
 
+@Entity(tableName = "task_table", foreignKeys = @ForeignKey(entity = Project.class,
+        parentColumns = "name",
+        childColumns = "fk_projectName"))
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private long id;
-    private long projectId;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "creation_timestamp")
     private long creationTimestamp;
 
-    /**
-     * Instantiates a new Task.
-     *
-     * @param id                the unique identifier of the task to set
-     * @param projectId         the unique identifier of the project associated to the task to set
-     * @param name              the name of the task to set
-     * @param creationTimestamp the timestamp when the task has been created to set
-     */
-    public Task(long id, long projectId, @NonNull String name, long creationTimestamp) {
-        this.setId(id);
-        this.setProjectId(projectId);
+    @ColumnInfo(name = "fk_projectName")
+    private String fkProjectName;
+
+    public Task(@NonNull String name, long creationTimestamp, String fkProjectName) {
         this.setName(name);
         this.setCreationTimestamp(creationTimestamp);
+        this.setFkProjectName(fkProjectName);
     }
 
     ////////////////////////////////////////
@@ -38,27 +44,30 @@ public class Task {
         return name;
     }
 
-    @Nullable
-    public Project getProject() {
-        return Project.getProjectById(projectId);
+    public long getCreationTimestamp() {
+        return creationTimestamp;
+    }
+
+    public String getFkProjectName() {
+        return fkProjectName;
     }
 
     ////////////////////////////////////////
     /*  Setter  */
-    private void setId(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    private void setName(@NonNull String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
-    private void setProjectId(long projectId) {
-        this.projectId = projectId;
+    public void setCreationTimestamp(long creationTimestamp) {
+        this.creationTimestamp = creationTimestamp;
     }
 
-    private void setCreationTimestamp(long creationTimestamp) {
-        this.creationTimestamp = creationTimestamp;
+    public void setFkProjectName(String fkProjectName) {
+        this.fkProjectName = fkProjectName;
     }
 
     ////////////////////////////////////////
