@@ -1,14 +1,10 @@
-package com.cleanup.todoc.room.entity;
+package com.cleanup.todoc.repository.room.entity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Entity(tableName = "project_table")
 public class Project {

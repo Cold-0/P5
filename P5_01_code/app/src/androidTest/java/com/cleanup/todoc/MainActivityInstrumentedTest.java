@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cleanup.todoc.ui.MainActivity;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

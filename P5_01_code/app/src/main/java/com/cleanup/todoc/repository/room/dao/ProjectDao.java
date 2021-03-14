@@ -1,4 +1,4 @@
-package com.cleanup.todoc.room.dao;
+package com.cleanup.todoc.repository.room.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.cleanup.todoc.room.entity.Project;
+import com.cleanup.todoc.repository.room.entity.Project;
 
 import java.util.List;
 

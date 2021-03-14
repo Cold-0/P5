@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui.tasklist;
+package com.cleanup.todoc.tasklist;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.cleanup.todoc.databinding.ItemTaskBinding;
-import com.cleanup.todoc.room.entity.Task;
+import com.cleanup.todoc.repository.room.entity.Task;
 
 import java.util.List;
 
-public class TasksAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewHolder> {
     /**
      * The list of tasks the adapter deals with
      */
@@ -25,11 +25,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private final DeleteTaskListener deleteTaskListener;
 
     /**
-     * Instantiates a new TasksAdapter.
+     * Instantiates a new TasksRecyclerViewAdapter.
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    public TasksAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+    public TasksRecyclerViewAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
     }
@@ -46,13 +46,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public TasksRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         @NonNull ItemTaskBinding binding = ItemTaskBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
-        return new TaskViewHolder(binding, deleteTaskListener);
+        return new TasksRecyclerViewHolder(binding, deleteTaskListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder taskViewHolder, int position) {
+    public void onBindViewHolder(@NonNull TasksRecyclerViewHolder taskViewHolder, int position) {
         taskViewHolder.bind(tasks.get(position));
     }
 

@@ -1,10 +1,9 @@
-package com.cleanup.todoc.room.entity;
+package com.cleanup.todoc.repository.room.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Comparator;

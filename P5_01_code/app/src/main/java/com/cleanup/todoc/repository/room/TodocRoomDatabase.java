@@ -1,4 +1,4 @@
-package com.cleanup.todoc.room;
+package com.cleanup.todoc.repository.room;
 
 import android.content.Context;
 
@@ -8,10 +8,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.cleanup.todoc.room.dao.ProjectDao;
-import com.cleanup.todoc.room.dao.TaskDao;
-import com.cleanup.todoc.room.entity.Project;
-import com.cleanup.todoc.room.entity.Task;
+import com.cleanup.todoc.repository.room.dao.ProjectDao;
+import com.cleanup.todoc.repository.room.dao.TaskDao;
+import com.cleanup.todoc.repository.room.entity.Project;
+import com.cleanup.todoc.repository.room.entity.Task;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,7 +25,7 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
 
     private static volatile TodocRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
@@ -57,12 +57,12 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
                         new Task("Intégrer Google Analytics", System.currentTimeMillis() / 1000, "Circus"),
                         new Task("Ajouter un header sur le site", System.currentTimeMillis() / 1000, "Lucidia")
                 );
-                
+
             });
         }
     };
 
-    static TodocRoomDatabase getDatabase(final Context context) {
+    public static TodocRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (TodocRoomDatabase.class) {
                 if (INSTANCE == null) {

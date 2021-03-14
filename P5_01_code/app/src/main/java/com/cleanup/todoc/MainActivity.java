@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,21 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.cleanup.todoc.R;
 import com.cleanup.todoc.databinding.ActivityMainBinding;
 import com.cleanup.todoc.databinding.DialogAddTaskBinding;
-import com.cleanup.todoc.room.entity.Project;
-import com.cleanup.todoc.room.entity.Task;
-import com.cleanup.todoc.room.viewmodel.ProjectViewModel;
-import com.cleanup.todoc.room.viewmodel.TaskViewModel;
-import com.cleanup.todoc.ui.tasklist.TasksAdapter;
+import com.cleanup.todoc.repository.room.entity.Project;
+import com.cleanup.todoc.repository.room.entity.Task;
+import com.cleanup.todoc.repository.room.viewmodel.ProjectViewModel;
+import com.cleanup.todoc.repository.room.viewmodel.TaskViewModel;
+import com.cleanup.todoc.tasklist.TasksRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
+public class MainActivity extends AppCompatActivity implements TasksRecyclerViewAdapter.DeleteTaskListener {
     private ActivityMainBinding mBinding;
 
     private TaskViewModel mTaskViewModel;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private final ArrayList<Task> mTaskList = new ArrayList<>();
     private List<Project> mProjectList;
 
-    private final TasksAdapter mTasksAdapter = new TasksAdapter(mTaskList, this);
+    private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(mTaskList, this);
 
     @NonNull
     private SortMethod mSelectedSortMethod = SortMethod.NONE;

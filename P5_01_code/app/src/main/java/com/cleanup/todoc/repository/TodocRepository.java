@@ -1,13 +1,14 @@
-package com.cleanup.todoc.room;
+package com.cleanup.todoc.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.cleanup.todoc.room.dao.ProjectDao;
-import com.cleanup.todoc.room.dao.TaskDao;
-import com.cleanup.todoc.room.entity.Project;
-import com.cleanup.todoc.room.entity.Task;
+import com.cleanup.todoc.repository.room.TodocRoomDatabase;
+import com.cleanup.todoc.repository.room.dao.ProjectDao;
+import com.cleanup.todoc.repository.room.dao.TaskDao;
+import com.cleanup.todoc.repository.room.entity.Project;
+import com.cleanup.todoc.repository.room.entity.Task;
 
 import java.util.List;
 

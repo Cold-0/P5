@@ -1,22 +1,16 @@
-package com.cleanup.todoc.ui.tasklist;
-
-import android.app.Application;
-import android.content.res.ColorStateList;
-import android.view.View;
+package com.cleanup.todoc.tasklist;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.databinding.ItemTaskBinding;
-import com.cleanup.todoc.room.TodocRoomDatabase;
-import com.cleanup.todoc.room.entity.Project;
-import com.cleanup.todoc.room.entity.Task;
+import com.cleanup.todoc.repository.room.entity.Task;
 
-class TaskViewHolder extends RecyclerView.ViewHolder {
+class TasksRecyclerViewHolder extends RecyclerView.ViewHolder {
     private final ItemTaskBinding mBinding;
-    private final TasksAdapter.DeleteTaskListener deleteTaskListener;
+    private final TasksRecyclerViewAdapter.DeleteTaskListener deleteTaskListener;
 
-    TaskViewHolder(@NonNull ItemTaskBinding binding, @NonNull TasksAdapter.DeleteTaskListener deleteTaskListener) {
+    TasksRecyclerViewHolder(@NonNull ItemTaskBinding binding, @NonNull TasksRecyclerViewAdapter.DeleteTaskListener deleteTaskListener) {
         super(binding.getRoot());
         mBinding = binding;
         this.deleteTaskListener = deleteTaskListener;
@@ -24,7 +18,7 @@ class TaskViewHolder extends RecyclerView.ViewHolder {
         mBinding.imgDelete.setOnClickListener(view -> {
             final Object tag = view.getTag();
             if (tag instanceof Task) {
-                TaskViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
+                TasksRecyclerViewHolder.this.deleteTaskListener.onDeleteTask((Task) tag);
             }
         });
     }
