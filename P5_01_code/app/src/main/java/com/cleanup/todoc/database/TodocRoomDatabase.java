@@ -1,6 +1,7 @@
 package com.cleanup.todoc.database;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -13,6 +14,7 @@ import com.cleanup.todoc.database.dao.TaskDao;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,17 +47,17 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
                 taskdao.deleteAll();
 
                 projectdao.insert(
-                        new Project("Tartampion", 0xff0000),
-                        new Project("Lucidia", 0x00ff00),
-                        new Project("Circus", 0x0000ff)
+                        new Project("Tartampion", Color.BLUE),
+                        new Project("Lucidia", Color.RED),
+                        new Project("Circus", Color.GREEN)
                 );
 
                 taskdao.insert(
-                        new Task("Ajouter un header sur le site", System.currentTimeMillis() / 1000, "Tartampion"),
-                        new Task("Modifier la couleur des textes", System.currentTimeMillis() / 1000, "Tartampion"),
-                        new Task("Appeler le client", System.currentTimeMillis() / 1000, "Lucidia"),
-                        new Task("Intégrer Google Analytics", System.currentTimeMillis() / 1000, "Circus"),
-                        new Task("Ajouter un header sur le site", System.currentTimeMillis() / 1000, "Lucidia")
+                        new Task("Ajouter un header sur le site", new Date().getTime() + 3, "Tartampion"),
+                        new Task("Modifier la couleur des textes", new Date().getTime(), "Tartampion"),
+                        new Task("Appeler le client", new Date().getTime() + 1, "Lucidia"),
+                        new Task("Intégrer Google Analytics", new Date().getTime(), "Circus"),
+                        new Task("Tester compatibilité", new Date().getTime() - 5, "Lucidia")
                 );
 
             });
@@ -69,6 +71,7 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
 
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TodocRoomDatabase.class, "todoc_database")
+                            .allowMainThreadQueries()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

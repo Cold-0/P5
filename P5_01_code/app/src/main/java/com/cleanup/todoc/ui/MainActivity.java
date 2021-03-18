@@ -24,7 +24,6 @@ import com.cleanup.todoc.ui.taskrecyclerview.TasksRecyclerViewAdapter;
 import com.cleanup.todoc.ui.viewmodel.ProjectViewModel;
 import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,10 +35,9 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     private TaskViewModel mTaskViewModel;
     private ProjectViewModel mProjectViewModel;
 
-    private List<Task> mTaskList = new ArrayList<>();
     private List<Project> mProjectList;
 
-    private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(this, mTaskList, this);
+    private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(getApplication(), new ArrayList<Task>(), this);
 
     @NonNull
     private SortMethod mSelectedSortMethod = SortMethod.NONE;
@@ -57,10 +55,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         mTaskViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(TaskViewModel.class);
         mProjectViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProjectViewModel.class);
 
-        mTaskViewModel.getAllTasks().observe(this, tasks -> {
-            mTaskList = tasks;
-            mTasksAdapter.updateTasks(tasks);
-        });
+        mTaskViewModel.getAllTasks().observe(this, this::onTaskListUpdated);
 
         mProjectViewModel.getAllProjects().observe(this, projects -> {
             mProjectList = projects;
@@ -92,49 +87,21 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
             mSelectedSortMethod = SortMethod.RECENT_FIRST;
         }
 
-        updateTasks();
-
+        mTasksAdapter.sortList(mSelectedSortMethod);
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onDeleteTask(Task task) {
-        mTaskList.remove(task);
-        updateTasks();
+        mTaskViewModel.delete(task);
     }
 
     //////////////////////////////////////
     /*   Task   */
     private void addTask(@NonNull Task task) {
-        mTaskList.add(task);
-        updateTasks();
+        mTaskViewModel.insert(task);
     }
 
-    private void updateTasks() {
-        if (mTaskList.size() == 0) {
-            mBinding.lblNoTask.setVisibility(View.VISIBLE);
-            mBinding.listTasks.setVisibility(View.GONE);
-        } else {
-            mBinding.lblNoTask.setVisibility(View.GONE);
-            mBinding.listTasks.setVisibility(View.VISIBLE);
-            switch (mSelectedSortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(mTaskList, new Task.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(mTaskList, new Task.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(mTaskList, new Task.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(mTaskList, new Task.TaskOldComparator());
-                    break;
-
-            }
-            mTasksAdapter.updateTasks(mTaskList);
-        }
-    }
 
     //////////////////////////////////////
     /*   Add Task Dialog   */
@@ -199,10 +166,23 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         mDialogAddTaskBinding.projectSpinner.setAdapter(adapter);
     }
 
+    private void onTaskListUpdated(List<Task> tasks) {
+        mTasksAdapter.updateTasks(tasks);
+        if (tasks.size() == 0) {
+            mBinding.lblNoTask.setVisibility(View.VISIBLE);
+            mBinding.listTasks.setVisibility(View.GONE);
+        } else {
+            mBinding.lblNoTask.setVisibility(View.GONE);
+            mBinding.listTasks.setVisibility(View.VISIBLE);
+            mTasksAdapter.updateTasks(tasks);
+            mTasksAdapter.sortList(mSelectedSortMethod);
+        }
+    }
+
     /**
      * List of all possible sort methods for task
      */
-    private enum SortMethod {
+    public enum SortMethod {
         ALPHABETICAL,
         ALPHABETICAL_INVERTED,
         RECENT_FIRST,

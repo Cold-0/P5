@@ -34,11 +34,21 @@ public class TaskRepository {
         return mAllTasks;
     }
 
-    // You must call this on a non-UI thread or your app will throw an exception. Room ensures
+    // You must call this on anon-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insert(Task task) {
+    public void insert(Task... task) {
         TodocRoomDatabase.databaseWriteExecutor.execute(() -> {
             mTaskDao.insert(task);
         });
+    }
+
+    public void delete(Task... task) {
+        TodocRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mTaskDao.delete(task);
+        });
+    }
+
+    public Project getProject(Task task) {
+        return mTaskDao.getProject(task.getFkProjectName());
     }
 }
