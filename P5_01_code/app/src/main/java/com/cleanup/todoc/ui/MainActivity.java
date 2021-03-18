@@ -1,4 +1,4 @@
-package com.cleanup.todoc;
+package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,15 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.cleanup.todoc.R;
 import com.cleanup.todoc.databinding.ActivityMainBinding;
 import com.cleanup.todoc.databinding.DialogAddTaskBinding;
-import com.cleanup.todoc.repository.room.entity.Project;
-import com.cleanup.todoc.repository.room.entity.Task;
-import com.cleanup.todoc.repository.room.viewmodel.ProjectViewModel;
-import com.cleanup.todoc.repository.room.viewmodel.TaskViewModel;
-import com.cleanup.todoc.tasklist.TasksRecyclerViewAdapter;
+import com.cleanup.todoc.model.Project;
+import com.cleanup.todoc.model.Task;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     private TaskViewModel mTaskViewModel;
     private ProjectViewModel mProjectViewModel;
 
-    private final ArrayList<Task> mTaskList = new ArrayList<>();
+    private List<Task> mTaskList;
     private List<Project> mProjectList;
 
     private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(mTaskList, this);
@@ -56,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
         mProjectViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ProjectViewModel.class);
 
         mTaskViewModel.getAllTasks().observe(this, tasks -> {
+            mTaskList = tasks;
             mTasksAdapter.updateTasks(tasks);
         });
 

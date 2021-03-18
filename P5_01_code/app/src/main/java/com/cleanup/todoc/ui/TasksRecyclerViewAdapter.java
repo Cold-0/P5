@@ -1,4 +1,4 @@
-package com.cleanup.todoc.tasklist;
+package com.cleanup.todoc.ui;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.cleanup.todoc.databinding.ItemTaskBinding;
-import com.cleanup.todoc.repository.room.entity.Task;
+import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 

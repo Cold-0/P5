@@ -1,4 +1,4 @@
-package com.cleanup.todoc.repository.room.viewmodel;
+package com.cleanup.todoc.ui;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.repository.TodocRepository;
-import com.cleanup.todoc.repository.room.entity.Task;
+import com.cleanup.todoc.model.Task;
 
 import java.util.List;
 
