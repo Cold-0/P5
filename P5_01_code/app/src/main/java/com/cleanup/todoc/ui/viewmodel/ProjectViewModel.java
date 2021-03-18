@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.cleanup.todoc.repository.ProjectRepository;
-import com.cleanup.todoc.repository.TaskRepository;
 import com.cleanup.todoc.model.Project;
 
 import java.util.List;

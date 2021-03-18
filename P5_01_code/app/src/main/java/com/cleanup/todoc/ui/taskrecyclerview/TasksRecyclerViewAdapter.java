@@ -3,6 +3,7 @@ package com.cleanup.todoc.ui.taskrecyclerview;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,6 +13,9 @@ import com.cleanup.todoc.model.Task;
 import java.util.List;
 
 public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecyclerViewHolder> {
+    @NonNull
+    Context context;
+
     /**
      * The list of tasks the adapter deals with
      */
@@ -29,9 +33,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
      *
      * @param tasks the list of tasks the adapter deals with to set
      */
-    public TasksRecyclerViewAdapter(@NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
+    public TasksRecyclerViewAdapter(@NonNull Context context, @NonNull final List<Task> tasks, @NonNull final DeleteTaskListener deleteTaskListener) {
         this.tasks = tasks;
         this.deleteTaskListener = deleteTaskListener;
+        this.context = context;
     }
 
     /**

@@ -24,6 +24,8 @@ import com.cleanup.todoc.ui.taskrecyclerview.TasksRecyclerViewAdapter;
 import com.cleanup.todoc.ui.viewmodel.ProjectViewModel;
 import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -34,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerView
     private TaskViewModel mTaskViewModel;
     private ProjectViewModel mProjectViewModel;
 
-    private List<Task> mTaskList;
+    private List<Task> mTaskList = new ArrayList<>();
     private List<Project> mProjectList;
 
-    private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(mTaskList, this);
+    private final TasksRecyclerViewAdapter mTasksAdapter = new TasksRecyclerViewAdapter(this, mTaskList, this);
 
     @NonNull
     private SortMethod mSelectedSortMethod = SortMethod.NONE;
