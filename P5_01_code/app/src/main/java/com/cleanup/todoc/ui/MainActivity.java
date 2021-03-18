@@ -20,6 +20,9 @@ import com.cleanup.todoc.databinding.ActivityMainBinding;
 import com.cleanup.todoc.databinding.DialogAddTaskBinding;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.ui.taskrecyclerview.TasksRecyclerViewAdapter;
+import com.cleanup.todoc.ui.viewmodel.ProjectViewModel;
+import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
 import java.util.Collections;
 import java.util.Date;
