@@ -69,7 +69,7 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
             synchronized (TodocRoomDatabase.class) {
                 if (INSTANCE == null) {
 
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                    INSTANCE = Room.databaseBuilder(context,
                             TodocRoomDatabase.class, "todoc_database")
                             .allowMainThreadQueries()
                             .addCallback(sRoomDatabaseCallback)
