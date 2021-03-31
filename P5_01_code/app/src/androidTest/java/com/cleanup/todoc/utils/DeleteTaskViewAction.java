@@ -9,7 +9,7 @@ import com.cleanup.todoc.R;
 
 import org.hamcrest.Matcher;
 
-public class DeleteMeetingViewAction implements ViewAction {
+public class DeleteTaskViewAction implements ViewAction {
     @Override
     public Matcher<View> getConstraints() {
         return null;

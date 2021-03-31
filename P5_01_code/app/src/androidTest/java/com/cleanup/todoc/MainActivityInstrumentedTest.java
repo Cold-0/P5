@@ -1,5 +1,6 @@
 package com.cleanup.todoc;
 
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,27 +9,29 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cleanup.todoc.ui.MainActivity;
+import com.cleanup.todoc.utils.DeleteTaskViewAction;
 
+import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Random;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cleanup.todoc.TestUtils.withRecyclerView;
+import static com.cleanup.todoc.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @author Gaëtan HERFRAY
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
 
@@ -36,34 +39,74 @@ public class MainActivityInstrumentedTest {
     @Rule
     public final ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
 
-    @Test
-    public void addAndRemoveTask() {
-        MainActivity activity = rule.getActivity();
-        TextView lblNoTask = activity.findViewById(R.id.lbl_no_task);
-        RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
-        int itemcount = listTasks.getAdapter().getItemCount();
+    private Random rand;
 
+    public int GetRandomInt(int max) {
+        if (rand == null)
+            rand = new Random();
+
+        return rand.nextInt(max);
+    }
+
+    void AddRandomTask() {
         onView(withId(R.id.fab_add_task)).perform(click());
-        onView(withId(R.id.txt_task_name)).perform(replaceText("Tâche example"));
+        onView(withId(R.id.txt_task_name)).perform(replaceText("Tâche example" + GetRandomInt(99999)));
         onView(withId(android.R.id.button1)).perform(click());
+    }
 
-        // Check that lblTask is not displayed anymore
-        assertThat(lblNoTask.getVisibility(), equalTo(View.GONE));
-        // Check that recyclerView is displayed
-        assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
-        // Check that it contains one element only
-        assertThat(listTasks.getAdapter().getItemCount(), equalTo(itemcount+1));
+    void DeleteRandomTask(int size) {
+        onView(allOf(withId(R.id.list_tasks), isDisplayed())).perform(
+                RecyclerViewActions.actionOnItemAtPosition(
+                        GetRandomInt(size),
+                        new DeleteTaskViewAction()
+                )
+        );
+    }
 
-        onView(withId(R.id.img_delete)).perform(click());
-
-        // Check that lblTask is displayed
-        assertThat(lblNoTask.getVisibility(), equalTo(View.VISIBLE));
-        // Check that recyclerView is not displayed anymore
-        assertThat(listTasks.getAdapter().getItemCount(), equalTo(itemcount));
+    void DeleteAllTask(int size) {
+        for (int i = 0; i < size; i++) {
+            onView(withId(R.id.list_tasks)).perform(
+                    RecyclerViewActions.actionOnItemAtPosition(
+                            GetRandomInt(size),
+                            new DeleteTaskViewAction()
+                    )
+            );
+        }
     }
 
     @Test
-    public void sortTasks() {
+    public void TestGoodCount() {
+        Matcher<View> matcher = allOf(withId(R.id.list_tasks), isDisplayed());
+        RecyclerView rv = rule.getActivity().findViewById(R.id.list_tasks);
+        onView(matcher).check(withItemCount(rv.getAdapter().getItemCount()));
+    }
+
+    @Test
+    public void TestAddAndRemoveTask() {
+        MainActivity activity = rule.getActivity();
+        RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
+
+        int item_count = listTasks.getAdapter().getItemCount();
+
+        AddRandomTask();
+        item_count++;
+
+        // Check that recyclerView is displayed
+        assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
+        // Check item count
+        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
+
+        DeleteRandomTask(item_count);
+        item_count--;
+
+        // Check item count
+        if (!(listTasks.getVisibility() == View.GONE) && item_count > 0)
+            onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
+    }
+
+    @Test
+    public void TestSortTasks() {
+        DeleteAllTask(((RecyclerView) rule.getActivity().findViewById(R.id.list_tasks)).getAdapter().getItemCount());
 
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
