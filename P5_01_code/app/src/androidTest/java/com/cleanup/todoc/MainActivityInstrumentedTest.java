@@ -5,14 +5,13 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
 
 import com.cleanup.todoc.ui.MainActivity;
 import com.cleanup.todoc.utils.DeleteTaskViewAction;
 
 import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +25,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.cleanup.todoc.TestUtils.withRecyclerView;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.cleanup.todoc.utils.TestUtils.withRecyclerView;
 import static com.cleanup.todoc.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -72,6 +73,13 @@ public class MainActivityInstrumentedTest {
                     )
             );
         }
+    }
+
+    @Test
+    public void TestCheckAppContext() {
+        // Context of the app under test.
+        Context appContext = getInstrumentation().getTargetContext();
+        assertEquals("com.openclassroom.mareu", appContext.getPackageName());
     }
 
     @Test
