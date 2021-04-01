@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 
+import com.cleanup.todoc.ui.taskrecyclerview.TasksRecyclerViewAdapter;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.MatcherAssert;
@@ -32,8 +34,8 @@ public class RecyclerViewItemCountAssertion implements ViewAssertion {
         }
 
         RecyclerView recyclerView = (RecyclerView) view;
-        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        TasksRecyclerViewAdapter adapter = (TasksRecyclerViewAdapter) recyclerView.getAdapter();
         assert adapter != null;
-        MatcherAssert.assertThat(adapter.getItemCount(), matcher);
+        MatcherAssert.assertThat(adapter.getListSize(), matcher);
     }
 }

@@ -39,8 +39,6 @@ public class DaoInstrumentedTest {
     @Test
     public void TestInsertTaskAndProject() {
 
-        List<Task> task = this.database.taskDao().getAll().getValue();
-
         // Test insert and get
         Project test_project = new Project("Test01", 0xffff00ff);
         database.projectDao().insert(test_project);

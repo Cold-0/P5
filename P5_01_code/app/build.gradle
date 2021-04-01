@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
     // Unit Test
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
 
     // Integration Test
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

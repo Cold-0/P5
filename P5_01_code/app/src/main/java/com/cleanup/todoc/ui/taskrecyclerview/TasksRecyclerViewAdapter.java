@@ -42,6 +42,10 @@ public class TasksRecyclerViewAdapter extends RecyclerView.Adapter<TasksRecycler
         this.application = application;
     }
 
+    public int getListSize() {
+        return tasks.size();
+    }
+
     /**
      * Updates the list of tasks the adapter deals with.
      *

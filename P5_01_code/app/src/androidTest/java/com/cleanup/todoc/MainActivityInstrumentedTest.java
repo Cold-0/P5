@@ -56,20 +56,20 @@ public class MainActivityInstrumentedTest {
     }
 
     void DeleteRandomTask(int size) {
-        onView(allOf(withId(R.id.list_tasks), isDisplayed())).perform(
+        onView(withId(R.id.list_tasks)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(
-                        GetRandomInt(size),
+                        0,
                         new DeleteTaskViewAction()
                 )
         );
     }
 
     void DeleteAllTask(int size) {
-        if (size != 0)
+        if (size > 0)
             for (int i = 0; i < size; i++) {
                 onView(withId(R.id.list_tasks)).perform(
                         RecyclerViewActions.actionOnItemAtPosition(
-                                GetRandomInt(size),
+                                i,
                                 new DeleteTaskViewAction()
                         )
                 );
@@ -87,7 +87,9 @@ public class MainActivityInstrumentedTest {
     public void TestGoodCount() {
         Matcher<View> matcher = allOf(withId(R.id.list_tasks), isDisplayed());
         RecyclerView rv = rule.getActivity().findViewById(R.id.list_tasks);
-        onView(matcher).check(withItemCount(rv.getAdapter().getItemCount()));
+
+        if (!(rv.getVisibility() == View.GONE) && rv.getAdapter().getItemCount() > 0)
+            onView(matcher).check(withItemCount(rv.getAdapter().getItemCount()));
     }
 
     @Test
@@ -95,21 +97,19 @@ public class MainActivityInstrumentedTest {
         MainActivity activity = rule.getActivity();
         RecyclerView listTasks = activity.findViewById(R.id.list_tasks);
 
-        int item_count = listTasks.getAdapter().getItemCount();
+        int itemCount = listTasks.getAdapter().getItemCount();
 
         AddRandomTask();
-        item_count++;
 
         // Check that recyclerView is displayed
         assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
         // Check item count
-        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
+        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(itemCount+1));
 
-        DeleteRandomTask(item_count);
+        DeleteRandomTask(itemCount+1);
 
         // Check item count
-        //if (!(listTasks.getVisibility() == View.GONE) && item_count > 0)
-        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
+        assertEquals(itemCount+1, listTasks.getAdapter().getItemCount());
     }
 
     @Test
