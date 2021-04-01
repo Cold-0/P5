@@ -79,7 +79,7 @@ public class MainActivityInstrumentedTest {
     public void TestCheckAppContext() {
         // Context of the app under test.
         Context appContext = getInstrumentation().getTargetContext();
-        assertEquals("com.openclassroom.mareu", appContext.getPackageName());
+        assertEquals("com.cleanup.todoc", appContext.getPackageName());
     }
 
     @Test
@@ -105,11 +105,10 @@ public class MainActivityInstrumentedTest {
         onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
 
         DeleteRandomTask(item_count);
-        item_count--;
 
         // Check item count
-        if (!(listTasks.getVisibility() == View.GONE) && item_count > 0)
-            onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
+        //if (!(listTasks.getVisibility() == View.GONE) && item_count > 0)
+        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(item_count));
     }
 
     @Test

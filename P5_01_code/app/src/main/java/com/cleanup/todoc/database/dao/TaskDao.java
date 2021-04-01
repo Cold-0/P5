@@ -31,6 +31,12 @@ public interface TaskDao {
     @Query("SELECT * FROM task_table")
     LiveData<List<Task>> getAll();
 
+    @Query("SELECT * FROM task_table WHERE id = :task_id")
+    Task get(long task_id);
+
+    @Query("SELECT * FROM task_table WHERE name = :task_name")
+    Task getByName(String task_name);
+
     @Query("SELECT * FROM project_table WHERE name = :project_name")
     Project getProject(String project_name);
 }
