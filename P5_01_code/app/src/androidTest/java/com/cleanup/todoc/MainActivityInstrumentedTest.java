@@ -65,14 +65,15 @@ public class MainActivityInstrumentedTest {
     }
 
     void DeleteAllTask(int size) {
-        for (int i = 0; i < size; i++) {
-            onView(withId(R.id.list_tasks)).perform(
-                    RecyclerViewActions.actionOnItemAtPosition(
-                            GetRandomInt(size),
-                            new DeleteTaskViewAction()
-                    )
-            );
-        }
+        if (size != 0)
+            for (int i = 0; i < size; i++) {
+                onView(withId(R.id.list_tasks)).perform(
+                        RecyclerViewActions.actionOnItemAtPosition(
+                                GetRandomInt(size),
+                                new DeleteTaskViewAction()
+                        )
+                );
+            }
     }
 
     @Test
