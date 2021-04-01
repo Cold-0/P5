@@ -55,7 +55,7 @@ public class MainActivityInstrumentedTest {
         onView(withId(android.R.id.button1)).perform(click());
     }
 
-    void DeleteRandomTask(int size) {
+    void DeleteFirstTask() {
         onView(withId(R.id.list_tasks)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(
                         0,
@@ -64,15 +64,11 @@ public class MainActivityInstrumentedTest {
         );
     }
 
-    void DeleteAllTask(int size) {
+    void DeleteAllTask(int size) throws InterruptedException {
         if (size > 0)
             for (int i = 0; i < size; i++) {
-                onView(withId(R.id.list_tasks)).perform(
-                        RecyclerViewActions.actionOnItemAtPosition(
-                                i,
-                                new DeleteTaskViewAction()
-                        )
-                );
+                DeleteFirstTask();
+                Thread.sleep(1000);
             }
     }
 
@@ -104,17 +100,18 @@ public class MainActivityInstrumentedTest {
         // Check that recyclerView is displayed
         assertThat(listTasks.getVisibility(), equalTo(View.VISIBLE));
         // Check item count
-        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(itemCount+1));
+        onView(allOf(withId(R.id.list_tasks), isDisplayed())).check(withItemCount(itemCount + 1));
 
-        DeleteRandomTask(itemCount+1);
+        DeleteFirstTask();
 
         // Check item count
-        assertEquals(itemCount+1, listTasks.getAdapter().getItemCount());
+        assertEquals(itemCount + 1, listTasks.getAdapter().getItemCount());
     }
 
     @Test
-    public void TestSortTasks() {
-        DeleteAllTask(((RecyclerView) rule.getActivity().findViewById(R.id.list_tasks)).getAdapter().getItemCount());
+    public void TestSortTasks() throws InterruptedException {
+        RecyclerView listTasks = rule.getActivity().findViewById(R.id.list_tasks);
+        DeleteAllTask(listTasks.getAdapter().getItemCount());
 
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
