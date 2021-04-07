@@ -17,25 +17,16 @@ public class TaskRepository {
     private TaskDao mTaskDao;
     private LiveData<List<Task>> mAllTasks;
 
-
-    // Note that in order to unit test the WordRepository, you have to remove the Application
-    // dependency. This adds complexity and much more code, and this sample is not about testing.
-    // See the BasicSample in the android-architecture-components repository at
-    // https://github.com/googlesamples
     public TaskRepository(Application application) {
         TodocRoomDatabase db = TodocRoomDatabase.getDatabase(application);
         mTaskDao = db.taskDao();
         mAllTasks = mTaskDao.getAll();
     }
 
-    // Room executes all queries on a separate thread.
-    // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<Task>> getAllTasks() {
         return mAllTasks;
     }
 
-    // You must call this on anon-UI thread or your app will throw an exception. Room ensures
-    // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(Task... task) {
         TodocRoomDatabase.databaseWriteExecutor.execute(() -> {
             mTaskDao.insert(task);

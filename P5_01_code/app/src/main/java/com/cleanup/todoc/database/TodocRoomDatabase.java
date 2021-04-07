@@ -35,11 +35,7 @@ public abstract class TodocRoomDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
 
-            // If you want to keep data through app restarts,
-            // comment out the following block
             databaseWriteExecutor.execute(() -> {
-                // Populate the database in the background.
-                // If you want to start with more words, just add them.
                 ProjectDao projectdao = INSTANCE.projectDao();
                 TaskDao taskdao = INSTANCE.taskDao();
 
