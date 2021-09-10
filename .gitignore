@@ -1,3 +1,10 @@
 P5_01_code/app/release/
-
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
 P5_01_code/app/debug/
